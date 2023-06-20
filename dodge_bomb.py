@@ -12,6 +12,8 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    #kk_img_re = pg.transform.flip(kk_img, True, False)
+    #kk_img_0 = pg.transform.rotozoom(kk_img_re, 90, 1.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
     bomb_img = pg.Surface((20, 20))
@@ -21,13 +23,17 @@ def main():
     bomb_img.set_colorkey((0, 0, 0))
     bomb_rct = bomb_img.get_rect()
     bomb_rct.center = bomb_x, bomb_y  
-    vx, vy = 5, 5
     gokk = {
         pg.K_UP: (0, -5),
         pg.K_DOWN: (0, 5),
         pg.K_LEFT: (-5, 0),
         pg.K_RIGHT: (5, 0),
     }
+    vx, vy = 5, 5
+
+    #kk_rct_kind = {
+    #    kk_img_0: (0, -5)
+    #}
 
     def check_rct(rect: pg.Rect) -> tuple[bool, bool]:
         """
@@ -36,7 +42,6 @@ def main():
         戻り値：横、縦方向の判定結果タプル
         (True:画面内　/　False:画面外)
         """
-
         yoko, tate = True, True
         if rect.left < 0 or WIDTH < rect.right:
             yoko = False
@@ -67,16 +72,25 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
+         
         bomb_rct.move_ip(vx, vy)
         yoko, tate = check_rct(bomb_rct)
+        if 0 < vx <= 15 :
+            vx += 0.03
+        if 0 < vy <= 15:
+            vy += 0.03
         if not yoko:
             vx *= -1
+            if 0 < vx < 15:
+                vx -= 0.03
         if not tate:
             vy *= -1
+            if 0 < vy < 15:
+                vy -= 0.03
         screen.blit(bomb_img, bomb_rct)
         pg.display.update()
         tmr += 1
-        clock.tick(50)
+        clock.tick(100)
 
 
 if __name__ == "__main__":
