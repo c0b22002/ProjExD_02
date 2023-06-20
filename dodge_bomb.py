@@ -12,9 +12,15 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
-    kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
-    #kk_img_re = pg.transform.flip(kk_img, True, False)
-    #kk_img_0 = pg.transform.rotozoom(kk_img_re, 90, 1.0)
+    kk_img = pg.transform.rotozoom(kk_img, 0, 2.0) #西
+    kk_img_re = pg.transform.flip(kk_img, True, False)
+    kk_img_0 = pg.transform.rotozoom(kk_img_re, 90, 1.0) #北
+    kk_img_1 = pg.transform.rotozoom(kk_img_re, 45, 1.0) #北東
+    kk_img_2 = pg.transform.rotozoom(kk_img_re, 0, 1.0) #東
+    kk_img_3 = pg.transform.rotozoom(kk_img_re, -45, 1.0) #南東
+    kk_img_4 = pg.transform.rotozoom(kk_img_re, -90, 1.0) #南
+    kk_img_5 = pg.transform.rotozoom(kk_img, 45, 1.0) #南西
+    kk_img_6 = pg.transform.rotozoom(kk_img, -45, 1.0) #北西
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
     bomb_img = pg.Surface((20, 20))
@@ -31,10 +37,6 @@ def main():
         pg.K_RIGHT: (5, 0),
     }
     vx, vy = 5, 5
-
-    #kk_rct_kind = {
-    #    kk_img_0: (0, -5)
-    #}
 
     def check_rct(rect: pg.Rect) -> tuple[bool, bool]:
         """
@@ -71,7 +73,25 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, kk_rct)
+        
+        if sum_mv[0] == 0 and sum_mv[1] == 0:
+            screen.blit(kk_img, kk_rct)
+        if sum_mv[0] == 0 and sum_mv[1] == -5:
+            screen.blit(kk_img_0, kk_rct)
+        if sum_mv[0] == 5 and sum_mv[1] == -5:
+            screen.blit(kk_img_1, kk_rct)
+        if sum_mv[0] == 5 and sum_mv[1] == 0:
+            screen.blit(kk_img_2, kk_rct)
+        if sum_mv[0] == 5 and sum_mv[1] == 5:
+            screen.blit(kk_img_3, kk_rct)
+        if sum_mv[0] == 0 and sum_mv[1] == 5:
+            screen.blit(kk_img_4, kk_rct)
+        if sum_mv[0] == -5 and sum_mv[1] == 5:
+            screen.blit(kk_img_5, kk_rct)
+        if sum_mv[0] == -5 and sum_mv[1] == -5:
+            screen.blit(kk_img_6, kk_rct)
+        if sum_mv[0] == -5 and sum_mv[1] == 0: 
+            screen.blit(kk_img, kk_rct)
          
         bomb_rct.move_ip(vx, vy)
         yoko, tate = check_rct(bomb_rct)
