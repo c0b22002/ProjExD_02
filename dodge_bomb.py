@@ -28,6 +28,21 @@ def main():
         pg.K_LEFT: (-5, 0),
         pg.K_RIGHT: (5, 0),
     }
+
+    def check_rct(rect: pg.Rect) -> tuple[bool, bool]:
+        """
+        こうかとん、爆弾が画面内か画面外かを判定
+        引数：こうかとんrect or 爆弾rect
+        戻り値：横、縦方向の判定結果タプル
+        (True:画面内　/　False:画面外)
+        """
+
+        yoko, tate = True, True
+        if rect.left < 0 or WIDTH < rect.right:
+            yoko = False
+        if rect.top < 0 or HEIGHT < rect.bottom:
+            tate = False
+        return yoko, tate
     clock = pg.time.Clock()
     tmr = 0
 
@@ -36,6 +51,9 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
+        #if kk_rct.colliderect(bomb_rct):
+        #    return
+
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         for k, mv in gokk.items():
@@ -43,10 +61,17 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv)
+        if check_rct(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
         bomb_rct.move_ip(vx, vy)
+        yoko, tate = check_rct(bomb_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bomb_img, bomb_rct)
         pg.display.update()
         tmr += 1
