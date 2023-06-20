@@ -74,6 +74,7 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         
+        #押されたキーによってこうかとんの画像を変える
         if sum_mv[0] == 0 and sum_mv[1] == 0:
             screen.blit(kk_img, kk_rct)
         if sum_mv[0] == 0 and sum_mv[1] == -5:
@@ -95,6 +96,8 @@ def main():
          
         bomb_rct.move_ip(vx, vy)
         yoko, tate = check_rct(bomb_rct)
+
+        #爆弾の加速が10になるまで0.03ずつ加算
         if 0 < vx <= 10 :
             vx += 0.03
         if 0 < vy <= 10:
@@ -107,8 +110,8 @@ def main():
             vy *= -1
             if 0 < vy < 10:
                 vy -= 0.03
+                
         screen.blit(bomb_img, bomb_rct)
-
         pg.display.update()
         tmr += 1
         clock.tick(100)
