@@ -18,7 +18,8 @@ def main():
     bomb_y = random.randint(0, HEIGHT)
     bomb_img.set_colorkey((0, 0, 0))
     bomb_rct = bomb_img.get_rect()
-    bomb_rct.center = bomb_x, bomb_y    
+    bomb_rct.center = bomb_x, bomb_y  
+    vx, vy = 5, 5
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -28,10 +29,11 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
+        bomb_rct.move_ip(vx, vy)
         screen.blit(bomb_img, bomb_rct)
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(50)
 
 
 if __name__ == "__main__":
