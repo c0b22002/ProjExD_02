@@ -1,4 +1,5 @@
 import random
+import tkinter as tk
 import sys
 import pygame as pg
 
@@ -57,8 +58,7 @@ def main():
                 return
 
         if kk_rct.colliderect(bomb_rct):
-            print("ゲームオーバー")
-            return
+            kk_rct.center = 900, 400
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -75,19 +75,20 @@ def main():
          
         bomb_rct.move_ip(vx, vy)
         yoko, tate = check_rct(bomb_rct)
-        if 0 < vx <= 15 :
+        if 0 < vx <= 10 :
             vx += 0.03
-        if 0 < vy <= 15:
+        if 0 < vy <= 10:
             vy += 0.03
         if not yoko:
             vx *= -1
-            if 0 < vx < 15:
+            if 0 < vx < 10:
                 vx -= 0.03
         if not tate:
             vy *= -1
-            if 0 < vy < 15:
+            if 0 < vy < 10:
                 vy -= 0.03
         screen.blit(bomb_img, bomb_rct)
+
         pg.display.update()
         tmr += 1
         clock.tick(100)
